@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "734282374704",
+    "project_id": "jeevan-setu-121205",
+    "storage_bucket": "jeevan-setu-121205.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734282374704:android:71b4e9b954cc28499d17f5",
+        "android_client_info": {
+          "package_name": "com.example.jeevansetu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYiC1T0zfnCxyLe8-BUtTsqGJiB34CJBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
