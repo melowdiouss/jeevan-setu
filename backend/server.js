@@ -53,6 +53,25 @@ if (process.env.NODE_ENV !== 'test') {
 app.use('/api/', apiLimiter);
 
 // ──────────────────────────────────────────────
+// Database Connection (works for both local & Vercel serverless)
+// ──────────────────────────────────────────────
+
+let isDbConnected = false;
+
+app.use(async (req, res, next) => {
+  if (!isDbConnected) {
+    try {
+      await connectDB();
+      isDbConnected = true;
+    } catch (error) {
+      console.error('DB connection failed:', error.message);
+      return res.status(500).json({ error: 'Database connection failed' });
+    }
+  }
+  next();
+});
+
+// ──────────────────────────────────────────────
 // Routes
 // ──────────────────────────────────────────────
 
@@ -97,26 +116,16 @@ app.use((err, req, res, _next) => {
 });
 
 // ──────────────────────────────────────────────
-// Start Server
+// Start Server (only in local/non-serverless mode)
 // ──────────────────────────────────────────────
 
-async function startServer() {
-  try {
-    // Connect to MongoDB
-    await connectDB();
-
-    app.listen(PORT, () => {
-      console.log(`\n🚀 JeevanSetu Backend running on port ${PORT}`);
-      console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`   Health check: http://localhost:${PORT}/api/health`);
-      console.log(`   API base:     http://localhost:${PORT}/api\n`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error.message);
-    process.exit(1);
-  }
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`\n🚀 JeevanSetu Backend running on port ${PORT}`);
+    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`   Health check: http://localhost:${PORT}/api/health`);
+    console.log(`   API base:     http://localhost:${PORT}/api\n`);
+  });
 }
-
-startServer();
 
 module.exports = app;

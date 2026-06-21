@@ -32,8 +32,7 @@ const connectDB = async () => {
       );
 
       if (retries >= maxRetries) {
-        console.error('Max retries reached. Could not connect to MongoDB.');
-        process.exit(1);
+        throw new Error('Max retries reached. Could not connect to MongoDB.');
       }
 
       // Exponential backoff: 1s, 2s, 4s, 8s, 16s
