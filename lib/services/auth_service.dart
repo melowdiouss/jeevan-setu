@@ -5,6 +5,14 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  /// Get the current user's Firebase ID token for backend authentication.
+  Future<String?> getIdToken() async {
+    return await _auth.currentUser?.getIdToken();
+  }
+
+  /// Get the current user.
+  User? get currentUser => _auth.currentUser;
+
   Future<void> signUp({
     required String email,
     required String password,
@@ -88,4 +96,4 @@ class AuthService {
   }
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
-} 
+}

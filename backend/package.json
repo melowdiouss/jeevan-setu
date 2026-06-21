@@ -1,0 +1,21 @@
+{
+  "name": "jeevansetu-backend",
+  "version": "1.0.0",
+  "description": "Secure backend API for JeevanSetu Flutter app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.1",
+    "express-validator": "^7.2.0",
+    "firebase-admin": "^12.6.0",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.7.0",
+    "morgan": "^1.10.0"
+  }
+}

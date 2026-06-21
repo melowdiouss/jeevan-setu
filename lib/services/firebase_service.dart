@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:typed_data';
 
 class FirebaseService {
@@ -155,7 +156,7 @@ class FirebaseService {
         'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print('Error storing user profile: $e');
+      if (kDebugMode) { print('Error storing user profile: $e'); }
       rethrow;
     }
   }
@@ -180,7 +181,7 @@ class FirebaseService {
         'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print('Error storing education data: $e');
+      if (kDebugMode) { print('Error storing education data: $e'); }
       rethrow;
     }
   }
@@ -203,7 +204,7 @@ class FirebaseService {
         'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print('Error storing healthcare data: $e');
+      if (kDebugMode) { print('Error storing healthcare data: $e'); }
       rethrow;
     }
   }
@@ -228,7 +229,7 @@ class FirebaseService {
         'createdAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      print('Error storing agriculture data: $e');
+      if (kDebugMode) { print('Error storing agriculture data: $e'); }
       rethrow;
     }
   }
@@ -241,7 +242,7 @@ class FirebaseService {
       final snapshot = await uploadTask;
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      print('Error uploading file: $e');
+      if (kDebugMode) { print('Error uploading file: $e'); }
       rethrow;
     }
   }
@@ -252,7 +253,7 @@ class FirebaseService {
       final doc = await _firestore.collection('users').doc(userId).get();
       return doc.data();
     } catch (e) {
-      print('Error getting user data: $e');
+      if (kDebugMode) { print('Error getting user data: $e'); }
       return null;
     }
   }
@@ -269,7 +270,7 @@ class FirebaseService {
           .map((doc) => doc.data())
           .toList();
     } catch (e) {
-      print('Error getting education data: $e');
+      if (kDebugMode) { print('Error getting education data: $e'); }
       return [];
     }
   }
@@ -286,7 +287,7 @@ class FirebaseService {
           .map((doc) => doc.data())
           .toList();
     } catch (e) {
-      print('Error getting healthcare data: $e');
+      if (kDebugMode) { print('Error getting healthcare data: $e'); }
       return [];
     }
   }
@@ -303,7 +304,7 @@ class FirebaseService {
           .map((doc) => doc.data())
           .toList();
     } catch (e) {
-      print('Error getting agriculture data: $e');
+      if (kDebugMode) { print('Error getting agriculture data: $e'); }
       return [];
     }
   }

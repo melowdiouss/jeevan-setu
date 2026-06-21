@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 
 class RemoteConfigService {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -93,7 +95,9 @@ class RemoteConfigService {
 
       await _remoteConfig.fetchAndActivate();
     } catch (e) {
-      print('Error initializing Remote Config: $e');
+      if (kDebugMode) {
+        print('Error initializing Remote Config: $e');
+      }
     }
   }
 
@@ -103,8 +107,29 @@ class RemoteConfigService {
   bool get enableCourses => _remoteConfig.getBool(_enableCoursesKey);
   bool get enableScholarships => _remoteConfig.getBool(_enableScholarshipsKey);
   bool get enableStudyMaterials => _remoteConfig.getBool(_enableStudyMaterialsKey);
-  Map<String, dynamic> get availableLanguages => _remoteConfig.getValue(_availableLanguagesKey).asString() as Map<String, dynamic>;
-  Map<String, dynamic> get translations => _remoteConfig.getValue(_translationsKey).asString() as Map<String, dynamic>;
+  Map<String, dynamic> get availableLanguages {
+    try {
+      final value = _remoteConfig.getValue(_availableLanguagesKey).asString();
+      return jsonDecode(value) as Map<String, dynamic>;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error parsing availableLanguages: $e');
+      }
+      return {'languages': []};
+    }
+  }
+
+  Map<String, dynamic> get translations {
+    try {
+      final value = _remoteConfig.getValue(_translationsKey).asString();
+      return jsonDecode(value) as Map<String, dynamic>;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error parsing translations: $e');
+      }
+      return {};
+    }
+  }
 
   RemoteConfigValue getValue(String key) {
     return _remoteConfig.getValue(key);
@@ -114,7 +139,9 @@ class RemoteConfigService {
     try {
       await _remoteConfig.fetchAndActivate();
     } catch (e) {
-      print('Error refreshing Remote Config: $e');
+      if (kDebugMode) {
+        print('Error refreshing Remote Config: $e');
+      }
     }
   }
 } 

@@ -1,21 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import '../theme/app_theme.dart';
 import '../services/ai_service.dart';
 import '../widgets/typing_animation.dart';
-
-class Message {
-  final String text;
-  final bool isUser;
-  final bool isTyping;
-
-  Message({
-    required this.text,
-    required this.isUser,
-    this.isTyping = false,
-  });
-}
+import '../models/message.dart';
 
 class FinancialPage extends StatefulWidget {
   const FinancialPage({super.key});

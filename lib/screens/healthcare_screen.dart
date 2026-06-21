@@ -3,18 +3,7 @@ import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../services/ai_service.dart';
 import '../widgets/typing_animation.dart';
-
-class Message {
-  final String text;
-  final bool isUser;
-  final bool isTyping;
-
-  Message({
-    required this.text,
-    required this.isUser,
-    this.isTyping = false,
-  });
-}
+import '../models/message.dart';
 
 class HealthcareScreen extends StatefulWidget {
   const HealthcareScreen({super.key});

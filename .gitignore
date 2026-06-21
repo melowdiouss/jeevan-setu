@@ -44,3 +44,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .vercel
+
+# Backend
+backend/node_modules/
+backend/.env
+*.env
+!.env.example
+
+# Firebase service account key
+**/serviceAccountKey.json
