@@ -1,20 +1,24 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const maxRetries = 5;
+  // Reuse existing connection (important for serverless - connection persists across warm invocations)
+  if (mongoose.connection.readyState === 1) {
+    return mongoose;
+  }
+
+  const isServerless = !!process.env.VERCEL;
+  const maxRetries = isServerless ? 2 : 5;
   let retries = 0;
 
   while (retries < maxRetries) {
     try {
       const conn = await mongoose.connect(process.env.MONGODB_URI, {
-        // Mongoose 8 uses these defaults, but explicit for clarity
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 45000,
+        serverSelectionTimeoutMS: isServerless ? 3000 : 5000,
+        socketTimeoutMS: isServerless ? 10000 : 45000,
       });
 
       console.log(`✅ MongoDB connected: ${conn.connection.host}`);
 
-      // Handle connection events
       mongoose.connection.on('error', (err) => {
         console.error('MongoDB connection error:', err.message);
       });
@@ -35,8 +39,7 @@ const connectDB = async () => {
         throw new Error('Max retries reached. Could not connect to MongoDB.');
       }
 
-      // Exponential backoff: 1s, 2s, 4s, 8s, 16s
-      const delay = Math.pow(2, retries) * 1000;
+      const delay = Math.pow(2, retries) * 500;
       console.log(`Retrying in ${delay / 1000}s...`);
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
